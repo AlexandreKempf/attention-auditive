@@ -62,13 +62,9 @@
 				let isPastColor = colorClasses.includes(listWords[iMinus1].text)
 
 				if (isCommit && isRed) {listWords[i].correct=true}
-				if (isCommit && isPastRed && !isPastCommit) {listWords[iMinus1].correct=true}
-				if (isCommit && isPastRed && isPastCommit) {listWords[i].error=true}
-				if (isCommit && !isRed && !isPastRed) {listWords[i].error=true}
-
+				if (isCommit && !isRed) {listWords[i].error=true}
 				if (isCommit && isColor) {listWords[i].inhibition=true}
-				if (isCommit && isPastColor) {listWords[iMinus1].inhibition=true}
-		}
+				}
 		return listWords
 	}
 
