@@ -29,7 +29,8 @@
 		else if (event.key === 'ArrowUp'){event.preventDefault();index = Math.max(0, index-1)}
 		else if (event.key === 'ArrowDown'){event.preventDefault();index = Math.min(index+1, listWords.length-1)}
 		else if (event.key === 'Backspace'){listWords[index].commitment=false, listWords[index].inhibition=false, listWords[index].error=false, listWords[index].correct=false}
-		else if (event.key === 'Enter'){listWords[index].commitment=true}}
+    else if (event.key === 'Enter'){listWords[index].commitment=true}
+		else if (event.key === 'i'){listWords[index].commitment=true, listWords[index].inhibition=true, listWords[index].error=true}}
 
 	function updateIndexMouse(event){
 		index = Number(event.target.id)
@@ -49,19 +50,17 @@
 	function checkStates(listWords){
 
 		for (let i=0; i<listWords.length; i+=1){
-				listWords[i].correct = false
-				listWords[i].inhibition = false
-				listWords[i].error = false
-
 			  //let iMinus1 = Math.max(0, i-1)
 				let isRed = listWords[i].text == "rouge"
-				let isCommit = listWords[i].commitment
+        let isCommit = listWords[i].commitment
+				let isInhibProblem = listWords[i].inhibition
 				let isColor = colorClasses.includes(listWords[i].text)
 
-				if (isCommit && isRed) {listWords[i].correct=true}
+				if (isCommit && isRed && !isInhibProblem) {listWords[i].correct=true}
 				if (isCommit && !isRed) {listWords[i].error=true}
 				if (isCommit && isColor) {listWords[i].inhibition=true}
 				}
+
 		return listWords
 	}
 
