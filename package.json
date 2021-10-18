@@ -2,18 +2,28 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "svelte-kit dev",
+    "dev": "svelte-kit dev --port 4000",
     "build": "svelte-kit build --verbose",
-    "preview": "svelte-kit preview"
+    "preview": "svelte-kit preview --port 4000"
   },
   "devDependencies": {
     "@sveltejs/adapter-vercel": "next",
     "@sveltejs/kit": "next",
-    "svelte": "^3.38.3"
+    "autoprefixer": "^10.3.7",
+    "carbon-icons-svelte": "^10.38.0",
+    "cssnano": "^5.0.8",
+    "postcss": "^8.3.9",
+    "postcss-load-config": "^3.1.0",
+    "svelte": "^3.38.3",
+    "svelte-preprocess": "^4.9.8",
+    "tailwindcss": "^2.2.16"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.3.4",
+    "filereader": "^0.10.3",
     "prettier": "^2.3.2",
-    "prettier-plugin-svelte": "^2.3.1"
+    "prettier-plugin-svelte": "^2.3.1",
+    "svelte-hero-icons": "^3.0.0"
   },
   "prettier": {
     "arrowParens": "always",
