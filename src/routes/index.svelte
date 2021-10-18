@@ -53,13 +53,10 @@
 				listWords[i].inhibition = false
 				listWords[i].error = false
 
-				let iMinus1 = Math.max(0, i-1)
+			  //let iMinus1 = Math.max(0, i-1)
 				let isRed = listWords[i].text == "rouge"
 				let isCommit = listWords[i].commitment
-				let isPastRed = listWords[iMinus1].text == "rouge"
-				let isPastCommit = listWords[iMinus1].commitment
 				let isColor = colorClasses.includes(listWords[i].text)
-				let isPastColor = colorClasses.includes(listWords[iMinus1].text)
 
 				if (isCommit && isRed) {listWords[i].correct=true}
 				if (isCommit && !isRed) {listWords[i].error=true}
