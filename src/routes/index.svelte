@@ -9,6 +9,7 @@
 
 	let listWords = ['noir','chose','tôt','si','écoute','rouge','carré','alors','jaune','mais','bleu','rouge','là','prends','jaune','carré','là','tout','alors','noir','rouge','bleu','rouge','prends','là','ca','blanc','alors','mets','rouge','carré','rouge','prends','rouge','jaune','là','vide','mets','noir','non','alors','bleu','carré','noir','alors','bien','noir','carré','chose','assez','jaune','bleu','mets','alors','rouge','vide','rouge','jaune','va','rouge','boîte','blanc','mets','bleu','mets','rouge','alors','rouge','chose','tôt','si','ici','rouge','alors','jaune','mais','là','ça','prends','rouge','noir','chose','tôt','si','écoute','rouge','carré','alors','jaune','mais','bleu','là','ça','prends','rouge','jaune','carré','là','tout','alors','rouge','bleu','prends','là','ça','blanc','alors','mets','rouge','carré','prends','jaune','là','rouge','mets','rouge','non','alors','bleu','carré','alors','bien','noir','carré','chose','assez','jaune','bleu','mets','alors','vide','noir','alors','jaune','va','alors','rouge','carré','noir','rouge','chose','boîte','blanc','mets','rouge','mets','rouge','alors','rouge','noir','si','ici','rouge','carré','alors','jaune','mais','là','rouge','prends','ça','noir','chose','tôt','si','écoute','rouge','carré','alors','jaune','mais','bleu','rouge','ça','prends','jaune','carré','là','tout','rouge',]
 
+  let comments = ""
 	let colorClasses = ["bleu", "jaune", "noir", "blanc"]
 	let nbPerCol = 18
   let index = 0
@@ -23,14 +24,19 @@
 		listWords[i] = {'text': listWords[i], 'id': i, 'commitment':false, 'inhibition':false, 'error':false, 'correct':false}
 	}
 
+  let commentsOnFocus
+  const onFocus =()=>commentsOnFocus=true;
+	const onBlur =()=>commentsOnFocus=false;
+
 	function updateIndexKeyboard(event){
+    if (!commentsOnFocus){
 		if (event.key === 'ArrowRight'){event.preventDefault(); index = Math.min(index+nbPerCol, listWords.length-1)}
 		else if (event.key === 'ArrowLeft'){event.preventDefault();index = Math.max(0, index-nbPerCol)}
 		else if (event.key === 'ArrowUp'){event.preventDefault();index = Math.max(0, index-1)}
 		else if (event.key === 'ArrowDown'){event.preventDefault();index = Math.min(index+1, listWords.length-1)}
 		else if (event.key === 'Backspace'){listWords[index].commitment=false, listWords[index].inhibition=false, listWords[index].error=false, listWords[index].correct=false}
     else if (event.key === 'Enter'){listWords[index].commitment=true}
-		else if (event.key === 'i'){listWords[index].commitment=true, listWords[index].inhibition=true, listWords[index].error=true}}
+		else if (event.key === 'i'){listWords[index].commitment=true, listWords[index].inhibition=true, listWords[index].error=true}}}
 
 	function updateIndexMouse(event){
 		index = Number(event.target.id)
@@ -44,6 +50,7 @@
 				listWords[i].commitment = false
 		}
     index=0
+    comments=""
     this.blur() //deselect the button
 	}
 
@@ -70,9 +77,10 @@
   let uploadButton
   async function readJSONFile(file) {
 		let raw_text = await file.text()
-    return JSON.parse(raw_text)
+    return [JSON.parse(raw_text).listWords, JSON.parse(raw_text).comments];
   }
-  $: {JSONFile; if (JSONFile && JSONFile[0]){readJSONFile(JSONFile[0]).then((json) => listWords=json)}};
+  $: {JSONFile; if (JSONFile && JSONFile[0]){readJSONFile(JSONFile[0]).then((json) => [listWords, comments]=json); JSONFile=false}};
+
 
   const nbRed = listWords.filter(x => x.text=='rouge').length
   $: nbCorrects = listWords.filter(x => x.correct).length
@@ -82,6 +90,9 @@
 
 
 </script>
+
+
+<!-- <kbd>{key === ' ' ? 'Space' : key}</kbd> -->
 
 <svelte:window on:keydown={updateIndexKeyboard}/>
 
@@ -97,7 +108,7 @@
     <input type="file" class="hidden" bind:this={uploadButton} bind:files={JSONFile} accept="application/JSON" on:click={()=>uploadButton.value=''}>
   </label>
 
-  <a href={'data:attachment/json,' + JSON.stringify(listWords)} target='_blank' download='color-tap.json' class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
+  <a href={'data:attachment/json,' + JSON.stringify({"listWords": listWords, "comments": comments})} target='_blank' download='color-tap.json' class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
     <Icon src="{Save}" class="mr-2 w-6 h-6"/> Sauvegarder
   </a>
 </div>
@@ -125,8 +136,8 @@
   </div>
 </div>
 
-<div class="mt-5 ml-2 max-w-screen-md">
-  <dl class="mt-5 grid gap-5 grid-cols-2">
+<div class="mt-5 grid gap-5 grid-cols-2">
+  <dl class="ml-2 grid gap-5 grid-cols-2">
     <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
       <dt class="text-sm font-medium text-gray-500 truncate">
         Nombre de réponses correctes
@@ -173,4 +184,10 @@
       </dd>
     </div>
   </dl>
+
+<div>
+  <p class="text-sm font-medium text-gray-500"> Commentaires </p>
+  <textarea class="w-full h-full text-sm mr-5 mb-3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md" on:focus={onFocus} on:blur={onBlur} bind:value={comments}></textarea>
+</div>
+
 </div>
