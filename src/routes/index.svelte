@@ -35,8 +35,10 @@
 		else if (event.key === 'ArrowUp'){event.preventDefault();index = Math.max(0, index-1)}
 		else if (event.key === 'ArrowDown'){event.preventDefault();index = Math.min(index+1, listWords.length-1)}
 		else if (event.key === 'Backspace'){listWords[index].commitment=false, listWords[index].inhibition=false, listWords[index].error=false, listWords[index].correct=false}
-    else if (event.key === 'Enter'){listWords[index].commitment=true}
-		else if (event.key === 'i'){listWords[index].commitment=true, listWords[index].inhibition=true, listWords[index].error=true}}}
+    else if (event.key === 'a'){index = Math.min(index+1, listWords.length-1)}
+    else if (event.key === 'z'){listWords[index].commitment=true, listWords[index].correct=true, listWords[index].inhibition=false, listWords[index].error=false}
+    else if (event.key === 'e'){listWords[index].commitment=true, listWords[index].correct=false, listWords[index].inhibition=false, listWords[index].error=true}
+    else if (event.key === 'r'){listWords[index].commitment=true, listWords[index].correct=false, listWords[index].inhibition=true, listWords[index].error=true}}}
 
 	function updateIndexMouse(event){
 		index = Number(event.target.id)
@@ -53,25 +55,6 @@
     comments=""
     this.blur() //deselect the button
 	}
-
-	function checkStates(listWords){
-
-		for (let i=0; i<listWords.length; i+=1){
-			  //let iMinus1 = Math.max(0, i-1)
-				let isRed = listWords[i].text == "rouge"
-        let isCommit = listWords[i].commitment
-				let isInhibProblem = listWords[i].inhibition
-				let isColor = colorClasses.includes(listWords[i].text)
-
-				if (isCommit && isRed && !isInhibProblem) {listWords[i].correct=true}
-				if (isCommit && !isRed) {listWords[i].error=true}
-				if (isCommit && isColor) {listWords[i].inhibition=true}
-				}
-
-		return listWords
-	}
-
-  $: listWords = checkStates(listWords)
 
   let JSONFile
   let uploadButton
@@ -96,23 +79,36 @@
 
 <svelte:window on:keydown={updateIndexKeyboard}/>
 
-<div class="mt-5 ml-3">
-  <button on:click={resetAll} type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
-    <Icon src="{Trash}" class="mr-1 w-6 h-6"/> Tout supprimer
-  </button>
+<div class="grid grid-cols-2 gap-5">
+  <div class="mt-5 ml-3">
+    <button on:click={resetAll} type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
+      <Icon src="{Trash}" class="mr-1 w-6 h-6"/> Tout supprimer
+    </button>
 
-  <label>
-    <div class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
-      <Icon src="{Upload}" class="mr-2 w-6 h-6"/> Choisir un fichier
-    </div>
-    <input type="file" class="hidden" bind:this={uploadButton} bind:files={JSONFile} accept="application/JSON" on:click={()=>uploadButton.value=''}>
-  </label>
+    <label>
+      <div class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
+        <Icon src="{Upload}" class="mr-2 w-6 h-6"/> Choisir un fichier
+      </div>
+      <input type="file" class="hidden" bind:this={uploadButton} bind:files={JSONFile} accept="application/JSON" on:click={()=>uploadButton.value=''}>
+    </label>
 
-  <a href={'data:attachment/json,' + JSON.stringify({"listWords": listWords, "comments": comments})} target='_blank' download='attention-auditive.json' class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
-    <Icon src="{Save}" class="mr-2 w-6 h-6"/> Sauvegarder
-  </a>
+    <a href={'data:attachment/json,' + JSON.stringify({"listWords": listWords, "comments": comments})} target='_blank' download='attention-auditive.json' class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
+      <Icon src="{Save}" class="mr-2 w-6 h-6"/> Sauvegarder
+    </a>
+  </div>
+
+  <div class="flex mt-5 mb-5 gap-3 items-center">
+    <kbd class="flex pl-3 pr-3">a</kbd>
+    <p class="flex-auto text-sm">Passez au mot suivant</p>
+    <kbd class="flex pl-3 pr-3">z</kbd>
+    <p class="flex-auto text-sm">Bonne réponse</p>
+    <kbd class="flex pl-3 pr-3">e</kbd>
+    <p class="flex-auto text-sm">Erreur</p>
+    <kbd class="flex pl-3 pr-3">r</kbd>
+    <p class="flex-auto text-sm">Problème d'inhibition</p>
+  </div>
+
 </div>
-
 
 
 <div class="mt-5 ml-2 mr-2">

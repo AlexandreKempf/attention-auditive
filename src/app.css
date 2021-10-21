@@ -7,4 +7,15 @@
   .grid-rows-18{
     grid-template-rows: repeat(18, minmax(0, 1fr));
   }
+  kbd {
+		background-color: #eee;
+		border-radius: 3px;
+		font-size: 2em;
+		border-top: solid rgba(255, 255, 255, 0.5);
+		border-left: solid rgba(255, 255, 255, 0.5);
+		border-right: solid rgba(0, 0, 0, 0.2);
+		border-bottom: solid rgba(0, 0, 0, 0.2);
+		color: #555;
+    font-family: monospace;
+	}
 }
