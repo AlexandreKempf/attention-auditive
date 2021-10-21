@@ -116,7 +116,7 @@
     {#each listWords as word, i}
     <div>
       <div id={word.id} on:click={updateIndexMouse} class="justify-self-stretch pt-1 pb-1 pl-3 {word.id == index ? 'border-gray-500' : 'border-gray-200'} border self-stretch relative rounded-md shadow-sm">
-        <p id={word.id} on:click={updateIndexMouse} class="font-medium block w-full pr-10 sm:text-sm rounded-md {word.text == 'rouge' ? 'text-red-900' : 'text-gray-600'}">
+        <p id={word.id} on:click={updateIndexMouse} class="font-medium block w-full pr-10 sm:text-sm rounded-md {word.text == 'rouge' ? 'text-red-600 font-semibold' : 'text-gray-600'}">
           {word.text}
         </p>
         <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
