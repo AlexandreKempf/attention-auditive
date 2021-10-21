@@ -108,7 +108,7 @@
     <input type="file" class="hidden" bind:this={uploadButton} bind:files={JSONFile} accept="application/JSON" on:click={()=>uploadButton.value=''}>
   </label>
 
-  <a href={'data:attachment/json,' + JSON.stringify({"listWords": listWords, "comments": comments})} target='_blank' download='color-tap.json' class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
+  <a href={'data:attachment/json,' + JSON.stringify({"listWords": listWords, "comments": comments})} target='_blank' download='attention-auditive.json' class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-purple-600 bg-white hover:text-white hover:bg-purple-600">
     <Icon src="{Save}" class="mr-2 w-6 h-6"/> Sauvegarder
   </a>
 </div>
