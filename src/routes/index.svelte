@@ -179,7 +179,7 @@
 
 <div>
   <p class="text-sm font-medium text-gray-500"> Commentaires </p>
-  <textarea class="w-full h-full text-sm mr-5 mb-3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md" on:focus={onFocus} on:blur={onBlur} bind:value={comments}></textarea>
+  <textarea name="comments" class="w-full h-full text-sm mr-5 mb-3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md" on:focus={onFocus} on:blur={onBlur} bind:value={comments}></textarea>
 </div>
 
 </div>
